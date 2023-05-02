@@ -1,0 +1,73 @@
+using System;
+
+namespace GARAJ
+{
+    delegate void moika(Car car);
+    class Car
+    {
+        public string name { get; }
+        public string id { get; }
+        public string host { get; }
+        public int time { get; }
+
+        public Car(string name, string id, string host, int time)
+        {
+            this.name = name;
+            this.id = id;
+            this.host = host;
+            this.time = time; 
+        }
+    }
+    class Garage
+    {
+        public List<Car> car { get; set; }
+        public Garage()
+        {
+            car = new List<Car>();
+        }
+
+    }
+    class CarWash
+    {
+        public static void WashCar(Car car)
+        {
+            Console.WriteLine("{0}, мойка вашей машины {1} займет {2} секунд", car.host, car.name, car.time);
+            Thread.Sleep(1000 * car.time);
+            Console.WriteLine("{2},машина {0} с номером {1} готова", car.name, car.id,car.host);
+            Console.ReadKey();
+            Console.Clear();
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Сколько машин сегодня будем мыть, Начальника?");
+            int ncars=Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+            moika carmoika = CarWash.WashCar;
+            Garage mygarage = new Garage();
+            for (int i = 0; i < ncars; i++) {
+                
+                var rand = new Random();
+                Console.WriteLine("ВВедите модель");
+                string model=Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("ВВедите Номер");
+                string nomercar = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("ВВедите ваше ФИ");
+                string FI = Console.ReadLine();
+                Console.Clear();
+                int value = rand.Next(3,15);
+                Car car = new Car(model, nomercar, FI, value) ;
+                mygarage.car.Add(car);
+            }
+            foreach (Car car in mygarage.car)
+            {
+                carmoika(car);
+            }
+        }
+    }
+}
+//Вводите количество машин на мойку, затем выводиться информация, которую нужно заполнить, далее генерируется случайное число, данное число отвечает за время мойки машины, далее выводиться информация о готовности.
